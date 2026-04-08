@@ -1,6 +1,6 @@
-@php
-    $headerItems = ['Customer', 'Date', 'Status', 'Amount']
-@endphp
+@props([
+   'headerItems' => ['Customer', 'Date', 'Status', 'Amount']
+])
 
 <flux:table>
     <flux:table.columns>
