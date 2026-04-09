@@ -25,7 +25,7 @@ new class extends Component {
 
     public function handleGoogleLogin()
     {
-
+        $this->redirect('/oauth/google/redirect');
     }
 
     public function render()
@@ -59,8 +59,9 @@ new class extends Component {
                 </flux:field>
             </div>
 
-            <div class="space-y-2">
+            <div class="space-y-4">
                 <flux:button type="submit" variant="primary" class="w-full">Log in</flux:button>
+                <flux:button type="button" wire:click="handleGoogleLogin" class="w-full">Google Login</flux:button>
             </div>
         </flux:card>
     </form>
