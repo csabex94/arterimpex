@@ -20,13 +20,13 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('google')->with(['access_type' => 'offline'])->stateless()->user();
         $existingUser = User::where('email', $user->email)->first();
-        
+
         if ($existingUser) {
             $existingUser->provider_id = $user->id;
             $existingUser->access_token = $user->token;
             $existingUser->refresh_token = $user->refreshToken;
             $existingUser->save();
-            Auth::login($existingUser);
+            Auth::login($existingUser, $remember = true);
             session()->regenerate();
             return redirect()->to('/');
         }
@@ -40,8 +40,16 @@ class AuthController extends Controller
             'provider_id' => $user->id
         ]);
 
-        Auth::login($existingUser);
+        Auth::login($existingUser, $remember = true);
         session()->regenerate();
         return redirect()->to('/');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        session()->flush();
+        session()->regenerateToken();
+        return redirect()->route('home.page');
     }
 }

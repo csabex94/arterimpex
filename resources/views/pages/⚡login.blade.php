@@ -2,25 +2,16 @@
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
+use App\Livewire\Forms\LoginForm;
 use Livewire\Component;
 
 new class extends Component {
-    #[Validate('required')]
-    public string $email;
+    public LoginForm $loginForm;
 
-    #[Validate('required')]
-    public string $password;
-
-    public function handleLogin()
+    public function handleSubmit()
     {
-        $this->validate();
-
-        $attempt = Auth::attempt(['email' => $this->email, 'password' => $this->password]);
-
-        if ($attempt) {
-            session()->regenerate();
-            $this->redirect('/');
-        }
+        $this->loginForm->login();
+        $this->redirect('/login');
     }
 
     public function handleGoogleLogin()
@@ -36,7 +27,7 @@ new class extends Component {
 ?>
 
 <div class='min-h-screen bg-gray-50 w-full flex items-center justify-center'>
-    <form wire:submit="handleLogin" class='w-full max-w-xs'>
+    <form wire:submit="handleSubmit" class='w-full max-w-xs'>
         <flux:card class="space-y-6">
             <div>
                 <flux:heading size="lg">Log in to your account</flux:heading>
@@ -44,7 +35,7 @@ new class extends Component {
             </div>
 
             <div class="space-y-6">
-                <flux:input wire:model="email" label="Email" type="email" placeholder="Your email address" />
+                <flux:input wire:model="loginForm.email" label="Email" type="email" placeholder="Your email address" />
 
                 <flux:field>
                     <div class="mb-3 flex justify-between">
@@ -53,7 +44,7 @@ new class extends Component {
                         <flux:link href="#" variant="subtle" class="text-sm">Forgot password?</flux:link>
                     </div>
 
-                    <flux:input wire:model="password" type="password" placeholder="Your password" />
+                    <flux:input wire:model="loginForm.password" type="password" placeholder="Your password" />
 
                     <flux:error name="password" />
                 </flux:field>
