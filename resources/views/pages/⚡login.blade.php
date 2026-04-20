@@ -6,12 +6,13 @@ use App\Livewire\Forms\LoginForm;
 use Livewire\Component;
 
 new class extends Component {
+
     public LoginForm $loginForm;
 
     public function handleSubmit()
     {
         $this->loginForm->login();
-        $this->redirect('/login');
+        $this->redirect('/');
     }
 
     public function handleGoogleLogin()

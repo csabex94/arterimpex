@@ -26,6 +26,11 @@ return [
             'label' => 'Scales',
             'route' => '/scales',
             'icon' => 'scale'
+        ],
+        [
+            'label' => 'Pdas',
+            'route' => '/pdas',
+            'icon' => 'device-phone-mobile'
         ]
     ]
 ];

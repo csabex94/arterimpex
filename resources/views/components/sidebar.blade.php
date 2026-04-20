@@ -17,6 +17,7 @@
         @endforeach
     </flux:sidebar.nav>
     <flux:sidebar.spacer />
+
     <form action="{{ route('logout.action') }}" method="POST">
         <flux:button size="sm" type="submit"  class="w-full">Log out</flux:button>
     </form>
