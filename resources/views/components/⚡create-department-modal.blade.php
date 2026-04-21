@@ -10,6 +10,7 @@ new class extends Component {
     {
         $this->form->submitForm();
         Flux::modal('create-department')->close();
+        $this->redirect('/departments');
     }
 };
 ?>
