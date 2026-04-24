@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiAgentsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -15,6 +16,9 @@ Route::middleware('auth')->group(function() {
     Route::livewire('/maintainers', 'pages::maintainers')->name('maintainers.page');
     Route::livewire('/scales', 'pages::scales')->name('scales.page');
     Route::livewire('/pdas', 'pages::pdas')->name('pdas.page');
+    Route::livewire('/gemini', 'pages::gemini')->name('gemini.page');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout.action');
 });
+
+

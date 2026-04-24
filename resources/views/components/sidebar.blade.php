@@ -24,8 +24,10 @@
 </flux:sidebar>
 
 <flux:main>
-    <flux:heading size="xl" level="1">Good afternoon, Olivia</flux:heading>
-    <flux:text class="mb-6 mt-2 text-base">Here's what's new today</flux:text>
-    {{-- <flux:separator variant="subtle" /> --}}
-    {{ $content }}
+    <flux:heading size="xl" level="1">{{ auth()->user()->name }}</flux:heading>
+    <flux:text class="mb-6 mt-2 text-base">{{ auth()->user()->email }}</flux:text>
+
+    <div class="mt-5">
+        {{ $content }}
+    </div>
 </flux:main>

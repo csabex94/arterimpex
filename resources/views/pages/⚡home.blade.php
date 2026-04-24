@@ -11,6 +11,4 @@ new class extends Component
 };
 ?>
 
-<x-table>
-
-</x-table>
+<div></div>

@@ -4,12 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Attributes\Name;
 use Illuminate\Console\Command;
 
 #[Signature('app:create-user')]
 #[Description('Manually creating users from terminal.')]
 class CreateUser extends Command
 {
+    protected $name = "Create User from terminal";
     /**
      * Execute the console command.
      */

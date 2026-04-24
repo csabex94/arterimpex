@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use Flux\Flux;
 use App\Livewire\Forms\CreateDepartmentForm;
 
 new class extends Component {
