@@ -70,7 +70,10 @@ new class extends Component {
 ?>
 
 <div class='flex flex-col gap-2 items-end'>
-    <flux:button variant="filled" icon="plus" wire:click="$dispatch('createDepartment')">Create Department</flux:button>
+     <div class="flex justify-between items-center w-full gap-5">
+        <flux:input icon="magnifying-glass" placeholder="Search departments" />
+        <flux:button variant="filled" icon="plus" wire:click="$dispatch('createDepartment')">Create Department</flux:button>
+    </div>
 
     {{-- Create/Edit Modal --}}
     <flux:modal name="create-department" class="md:w-96">

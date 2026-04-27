@@ -15,6 +15,8 @@ new class extends Component
     public string $serial_number = '';
     public string $ip_address = '';
 
+    public const array TYPES = ['normal', 'multifunctional', 'label'];
+
     public ?Printer $printer = null;
 
     public ?int $department_id = null;
@@ -92,7 +94,10 @@ new class extends Component
 ?>
 
 <div class='flex flex-col gap-2 items-end'>
-    <flux:button variant="filled" icon="plus" wire:click="$dispatch('addPrinter')">Add Printer</flux:button>
+    <div class="flex justify-between items-center w-full gap-5">
+        <flux:input icon="magnifying-glass" placeholder="Search printers" />
+        <flux:button variant="filled" icon="plus" wire:click="$dispatch('addPrinter')">Add Printer</flux:button>
+    </div>
 
     {{-- Create/Edit Modal --}}
     <flux:modal name="add-printer" class="md:w-96">
@@ -102,9 +107,15 @@ new class extends Component
             </div>
             <flux:input label="Printer Name" wire:model='name'  autofocus/>
             <flux:input label="Printer Model" wire:model='model'/>
-            <flux:input label="Printer Type(normal/multifunctional/label)" wire:model='type'/>
+
             <flux:input label="Printer Serial Number(S/N)" wire:model='serial_number'/>
             <flux:input label="Printer Ip Address" wire:model='ip_address'/>
+
+            <flux:select wire:model="type" placeholder="Printer Type">
+                @foreach (static::TYPES as $printerType)
+                    <flux:select.option value="{{ $printerType }}">{{ $printerType }}</flux:select.option>
+                @endforeach
+            </flux:select>
 
             <flux:select wire:model="department_id" placeholder="Choose department...">
                 @foreach ($this->departments as $department)
