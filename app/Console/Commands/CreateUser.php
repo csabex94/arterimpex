@@ -17,10 +17,10 @@ class CreateUser extends Command
      */
     public function handle()
     {
-        $name = $this->ask('Name:');
-        $email = $this->ask('Email Address:');
-        $role = $this->ask('Role(admin/guest):', 'guest');
-        $password = $this->ask('Password:');
+        $name = $this->ask('Name');
+        $email = $this->ask('Email Address');
+        $role = $this->ask('Role(admin/guest)', 'guest');
+        $password = $this->ask('Password');
 
         \App\Models\User::create([
             'name' => $name,

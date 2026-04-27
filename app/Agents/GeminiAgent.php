@@ -18,7 +18,8 @@ class GeminiAgent
     public function ask(string $prompt, string $systemInstruction = 'You are a helpful assistant.')
     {
         // A Gemini 2.0 Flash modell használata (vagy amit a ListModels megenged)
-        $model = 'gemini-3.1-flash-lite-preview';
+        // $model = 'gemini-3.1-flash-lite-preview';
+        $model = 'gemini-2.5-flash-lite';
 
         $response = Http::post("{$this->baseUrl}{$model}:generateContent?key={$this->apiKey}", [
             'contents' => [
@@ -32,7 +33,9 @@ class GeminiAgent
             ],
             'generationConfig' => [
                 'temperature' => 0.7,
-                'maxOutputTokens' => 800,
+                'maxOutputTokens' => 1800,
+                'topP' => 0.8, // Focuses on the top 80% of probability mass
+                'topK' => 40,  // Limits the pool to the top 40 most likely words
             ]
         ]);
 

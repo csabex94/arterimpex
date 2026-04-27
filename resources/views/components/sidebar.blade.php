@@ -24,10 +24,8 @@
 </flux:sidebar>
 
 <flux:main>
-    <flux:heading size="xl" level="1">{{ auth()->user()->name }}</flux:heading>
-    <flux:text class="mb-6 mt-2 text-base">{{ auth()->user()->email }}</flux:text>
+    {{-- <flux:heading size="xl" level="1">{{ auth()->user()->name }}</flux:heading>
+    <flux:text class="mb-6 mt-2 text-base">{{ auth()->user()->email }}</flux:text> --}}
 
-    <div class="mt-5">
-        {{ $content }}
-    </div>
+ {{ $content }}
 </flux:main>

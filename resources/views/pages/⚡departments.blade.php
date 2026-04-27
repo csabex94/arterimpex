@@ -1,40 +1,66 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\Computed;
 use App\Models\Department;
 use Flux\Flux;
 
 new class extends Component {
-
-    public $departments = [];
-
-    public $department = null;
-
-    public function setDepartments(): void
+    #[Computed]
+    public function departments()
     {
-        $this->departments = Department::all();
+        return Department::all();
     }
 
-    public function showDeleteModal(Department $department): void
+    public ?Department $department = null;
+
+    public string $name = '';
+
+    protected $rules = ['name' => 'required|string'];
+
+    protected $listeners = [
+        'editDepartment' => 'edit',
+        'createDepartment' => 'create',
+        'deleteDepartment' => 'delete'
+    ];
+
+    public function create()
+    {
+        $this->reset(['name']);
+        $this->resetValidation();
+        Flux::modal('create-department')->show();
+    }
+
+    public function edit(Department $department)
+    {
+        $this->resetValidation();
+        $this->department = $department;
+        $this->name = $department->name;
+        Flux::modal('create-department')->show();
+    }
+
+    public function delete(Department $department)
     {
         $this->department = $department;
-        Flux::modal('delete-profile')->show();
+        Flux::modal('delete-department')->show();
     }
 
-    public function deleteDepartment()
+    public function save()
+    {
+        $data = $this->validate();
+        Department::updateOrCreate(['id' => $this->department?->id], $data);
+        Flux::modal('create-department')->close();
+        $this->department = null;
+    }
+
+    public function handleDelete()
     {
         if ($this->department) {
             $this->department->delete();
-            $this->department = null;
-            Flux::modal('delete-profile')->close();
-            $this->setDepartments();
+            Flux::modal('delete-department')->close();
         }
     }
 
-    public function mount(): void
-    {
-        $this->setDepartments();
-    }
 
     public function render()
     {
@@ -43,9 +69,28 @@ new class extends Component {
 };
 ?>
 
-<div class='flex flex-col gap-5 items-start'>
-    <livewire:create-department-modal />
-    <flux:modal name="delete-profile" class="min-w-88">
+<div class='flex flex-col gap-2 items-end'>
+    <flux:button variant="filled" icon="plus" wire:click="$dispatch('createDepartment')">Create Department</flux:button>
+
+    {{-- Create/Edit Modal --}}
+    <flux:modal name="create-department" class="md:w-96">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ $department ? 'Edit Department' : 'Create Department' }}</flux:heading>
+            </div>
+            <flux:input label="Department Name" wire:model='name'  autofocus/>
+            <div class="flex">
+                <flux:spacer />
+                <flux:button wire:click="save" type="submit" variant="primary">
+                    {{ $department ? 'Save Changes' : 'Create Department' }}
+                </flux:button>
+            </div>
+        </div>
+    </flux:modal>
+    {{-- End - Create/Edit Modal --}}
+
+    {{-- Delete Modal --}}
+    <flux:modal name="delete-department" class="min-w-88">
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Delete department?</flux:heading>
@@ -59,28 +104,30 @@ new class extends Component {
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="button" wire:click='deleteDepartment' variant="danger">Delete</flux:button>
+                <flux:button type="button" wire:click='handleDelete' variant="danger">Delete</flux:button>
             </div>
         </div>
     </flux:modal>
+    {{-- End - Delete Modal --}}
 
-  <div class="w-full">
-    <x-table>
+    {{-- Table --}}
+    <x-table class="w-full">
         <x-slot:table-header>
             <flux:table.column>Department Name</flux:table.column>
             <flux:table.column class="flex items-center justify-end">Edit/Delete</flux:table.column>
         </x-slot:table-header>
         <x-slot:table-body>
-            @foreach ($departments as $department)
+            @foreach ($this->departments as $department)
                 <flux:table.row>
                     <flux:table.cell>{{ $department->name }}</flux:table.cell>
                     <flux:table.cell class="flex items-center justify-end gap-3">
-                        <flux:button size="sm">Edit</flux:button>
-                        <flux:button type="button" wire:click="showDeleteModal({{ $department }})" size="sm" variant="danger">Delete</flux:button>
+                        <flux:button variant="filled" type="button" size="sm" wire:click="$dispatch('editDepartment', { department: {{ $department }} })">Edit</flux:button>
+                        <flux:button type="button" wire:click="$dispatch('deleteDepartment', { department: {{ $department }} })" size="sm"
+                            variant="danger">Delete</flux:button>
                     </flux:table.cell>
                 </flux:table.row>
             @endforeach
         </x-slot:table-body>
     </x-table>
-  </div>
+    {{-- End - Table --}}
 </div>

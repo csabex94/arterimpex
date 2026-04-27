@@ -1,5 +1,5 @@
 
-<flux:table>
+<flux:table class="w-full">
     <flux:table.columns>
         {{ $tableHeader }}
     </flux:table.columns>
